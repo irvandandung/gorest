@@ -140,3 +140,21 @@ func (s *CustomerHandler) NotFound(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
 	s.responseBuilder(w, "not found")
 }
+
+func (s *CustomerHandler) GetAll(w http.ResponseWriter, r *http.Request){
+	limit, err := strconv.Atoi(r.FormValue("limit"))
+	page, err := strconv.Atoi(r.FormValue("page"))
+	offset := (page - 1) * limit
+
+	customers, err := s.custService.GetAllCustomer(offset, limit)
+	if err != nil {
+		errMsg := fmt.Sprintf("Get Customer error : %v", err)
+
+		w.WriteHeader(http.StatusBadRequest)
+		s.responseBuilder(w, errMsg)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	s.responseBuilder(w, customers)
+}

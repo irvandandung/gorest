@@ -32,6 +32,7 @@ func customerRouter(r *mux.Router) {
 	r.HandleFunc("/customers", custHandler.Post).Methods(http.MethodPost)
 	r.HandleFunc("/customers/{id}", custHandler.Put).Methods(http.MethodPut)
 	r.HandleFunc("/customers/{id}", custHandler.Delete).Methods(http.MethodDelete)
+	r.HandleFunc("/customers", custHandler.GetAll).Queries("limit", "{limit}", "page", "{page}").Methods(http.MethodGet)
 	r.HandleFunc("/", custHandler.NotFound)
 }
 

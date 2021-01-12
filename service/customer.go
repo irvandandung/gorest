@@ -10,6 +10,7 @@ type CustomerService interface {
 	CreateCustomer(cust *model.Customer) error
 	UpdateCustomer(id int, cust *model.Customer) error
 	DeleteCustomer(id int) error
+	GetAllCustomer(offset int, limit int) (list *[]model.Customer, err error)
 }
 
 type customerService struct {
@@ -21,6 +22,11 @@ func NewCustomerService(custRepository repository.CustomerRepository) CustomerSe
 	return &customerService{
 		custRepository: custRepository,
 	}
+}
+
+func (c *customerService) GetAllCustomer(offset int, limit int) (list *[]model.Customer, err error){
+	list, err = c.custRepository.FindAll(offset, limit)
+	return
 }
 
 func (c *customerService) getCustomerById(id int) (m *model.Customer, err error) {

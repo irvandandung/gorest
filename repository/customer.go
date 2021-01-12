@@ -10,6 +10,7 @@ type CustomerRepository interface {
 	Update(cust *model.Customer, updateValue interface{}) error
 	Delete(cust *model.Customer) error
 	FindOne(id int) (*model.Customer,error)
+	FindAll(offset int, limit int) (*[]model.Customer, error)
 }
 
 type customerRepository struct {
@@ -27,7 +28,12 @@ func (c *customerRepository) Create(cust *model.Customer) error {
 func (c *customerRepository) FindOne(id int) (cust *model.Customer,err error) {
 	cust = &model.Customer{}
 	err = c.dbConnection.First(cust, id).Error
+	return
+}
 
+func (c *customerRepository) FindAll(offset int, limit int) (list *[]model.Customer, err error){
+	list = &[]model.Customer{}
+	err = c.dbConnection.Debug().Limit(limit).Offset(offset).Find(list).Error
 	return
 }
 
