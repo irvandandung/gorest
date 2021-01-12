@@ -7,5 +7,5 @@ import (
 
 func main() {
 	log.Println("Running http server")
-	log.Fatal(http.ListenAndServe(":8080", RestRouter()))
+	log.Fatal(http.ListenAndServe(":1234", RestRouter()))
 }
